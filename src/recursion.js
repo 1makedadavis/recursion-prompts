@@ -7,11 +7,19 @@
 // Example: 5! = 5 x 4 x 3 x 2 x 1 = 120
 // factorial(5); // 120
 var factorial = function(n) {
+  if(n < 0){
+    return null
+  }
+  if (n === 0){
+    return 1
+  }
+return n * factorial(n-1)
 };
 
 // 2. Compute the sum of an array of integers.
 // sum([1,2,3,4,5,6]); // 21
 var sum = function(array) {
+return (array.length === 0)? 0: array[0] + sum(array.slice(1));
 };
 
 // 3. Sum all numbers in an array containing nested arrays.
@@ -21,6 +29,14 @@ var arraySum = function(array) {
 
 // 4. Check if a number is even.
 var isEven = function(n) {
+  if(n === 0){
+    return true
+  }
+  if(n === 0.5){
+    return false
+  }
+
+  return isEven(n/=2)
 };
 
 // 5. Sum all integers below a given integer.
@@ -136,11 +152,35 @@ var countKeysInObj = function(obj, key) {
 // countValuesInObj(obj, 'r') // 2
 // countValuesInObj(obj, 'e') // 1
 var countValuesInObj = function(obj, value) {
+  var count = 0;
+  if(typeof(obj)=== 'object'){
+    for(var key in obj){
+      if(obj[key] === value){
+        count ++
+      }
+        count+= countValuesInObj(obj[key], value)
+      }
+    }
+return count
 };
 
 // 24. Find all keys in an object (and nested objects) by a provided name and rename
 // them to a provided new name while preserving the value stored at that key.
 var replaceKeysInObj = function(obj, oldKey, newKey) {
+  if(typeof(obj) === 'object'){
+    if( oldKey in obj){
+      if(oldKey !== newKey){
+        Object.defineProperty(obj, newKey, Object.getOwnPropertyDescriptor(obj, oldKey));
+        delete obj[oldKey]
+      }
+        //obj[oldKey] ===obj[newKey];
+        //delete obj[oldKey]
+      }
+      for(var key in obj) {
+    replaceKeysInObj(obj[key], oldKey, newKey)
+    }
+  }
+  return obj
 };
 
 // 25. Get the first n Fibonacci numbers. In the Fibonacci sequence, each subsequent
